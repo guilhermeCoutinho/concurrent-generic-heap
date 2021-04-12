@@ -53,7 +53,16 @@ The implementation also contains a nice visualization of the heap. For example, 
 ## Safe heap
 The chosen design was to use channels to issue commands to a centralized goroutine that would call the correct unsafe operation in a safe way.
 Its like this centralized goroutine is listening to heap operation requests. To return values from it, inside the request tehres another channel that will serve as a callback for the result of operations.
-This is how it works
+
+**Interesting point**: One interesting thing I noticed, is that some methods are essentially unsafe in the scope of the caller and other methods are unsafe only in the scope of the heap instance. My current design choice was to keep the API simple, so that the user of the safe-heap doesnt need to know what is safe/unsafe in their scope.
+
+For example:
+- Size():  The size() function is unsafe for the caller scope because the result of this function will become obsolete as soon as another heap operation happens elsewhere. So the caller of Size() function would be required to lock the heap while its using the size value to do whatever it wants.
+- Push():  The push() function is only unsafe within the instance of the heap. The caller will call push and this will lock the caller untill push is resolved internally, but the caller doesnt need to do anything special about it. The caller just has to be aware that push() is a locking operation and it could slow down critical paths or do some syncronization with waitGroups for example.
+
+Im curious to see how other libs threat this, if they just leave that problem to good documentation or enforce the caller to threat these things somehow.
+
+This is how we centralize the execution of the internal operations (keeping a dedicated channel for every operation):
 ```
 func (s *SafeHeapImpl) startListening() {
 	for {
