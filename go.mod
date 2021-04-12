@@ -1,4 +1,4 @@
-module generic-heap
+module github.com/guilhermeCoutinho/concurrent-generic-heap
 
 go 1.15
 

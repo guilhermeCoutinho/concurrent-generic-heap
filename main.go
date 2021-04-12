@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"generic-heap/heap"
-	"generic-heap/safeheap"
 	"math/rand"
 	"sync"
+
+	"github.com/guilhermeCoutinho/concurrent-generic-heap/heap"
+	"github.com/guilhermeCoutinho/concurrent-generic-heap/safeheap"
 )
 
 func main() {
