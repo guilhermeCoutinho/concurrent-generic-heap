@@ -58,7 +58,6 @@ func (h *HeapImpl) Peek() (interface{}, error) {
 
 func (h *HeapImpl) Find(val interface{}) (int, error) {
 	for i := 0; i < h.size; i++ {
-		fmt.Println(h.arr[i], val)
 		if h.arr[i] == val {
 			return i, nil
 		}
