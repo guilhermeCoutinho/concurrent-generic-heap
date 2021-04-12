@@ -1,7 +1,7 @@
 package safeheap
 
 import (
-	"generic-heap/heap"
+	"github.com/guilhermeCoutinho/concurrent-generic-heap/heap"
 )
 
 type heapOperation struct {
